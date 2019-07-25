@@ -1,0 +1,14 @@
+{
+  "name": "swotlog-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "iotheo <ioan.theodo@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "node src/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
