@@ -16,12 +16,17 @@
   },
   "scripts": {
     "start": "webpack --env dev --watch",
+    "start2": "node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "babel-loader": "^8.0.6",
+    "babel-preset-airbnb": "^4.1.0",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "nodemon": "^1.19.1",
     "nodemon-webpack-plugin": "^4.0.8",
     "webpack": "^4.38.0",
