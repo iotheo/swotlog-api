@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 const app = express();
@@ -13,18 +13,23 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
-const db = require('./db.js');
+/*
+  CommonJS syntax is one-way here. We cannot use ES6 syntax for such cases.
+  https://stackoverflow.com/questions/31354559/using-node-js-require-vs-es6-import-export
+*/
+const Users = require('./api/Users');
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World!');
 });
-app.get('/users', db.getUsers);
-app.post('/users', db.createUser);
-app.get('/users/:id', db.getUserById);
-app.put('/users/:id', db.updateUser);
-app.delete('/users/:id', db.deleteUser);
+
+app.post('/users(/:id?[0-9])', Users.get);
+// app.post('/users', db.createUser);
+// app.get('/users/:id', db.getUserById);
+// app.put('/users/:id', db.updateUser);
+// app.delete('/users/:id', db.deleteUser);
 
 
 app.listen(port, () => {
-  console.log(`API is listening on port ${port}!`)
+  console.log(`API is listening on port ${port}!`);
 });
