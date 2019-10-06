@@ -26,6 +26,7 @@ module.exports = {
     'newline-after-var': 1,
     'spaced-comment': 1,
     'newline-before-return': 1,
+    'no-trailing-spaces': 1,
     'import/no-extraneous-dependencies': [
       "error",
       {
