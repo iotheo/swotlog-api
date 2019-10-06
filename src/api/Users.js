@@ -1,8 +1,23 @@
 import { pool } from '../db';
 
 const get = (req, res) => {
-  if (parseInt(req.params.id, 10)) {
-    res.status(200).send('easter egg');
+  const userId = req.params.id;
+
+  if (parseInt(userId, 10)) {
+    pool.query('SELECT * FROM person where id = $1', [userId], (error, results) => {
+      if (error) {
+        throw error;
+      }
+
+      if (userId && !results.rows.length) {
+        res.status(404).send('Not found. Bruh');
+
+        return;
+      }
+
+      res.status(200).json(results.rows);
+    });
+
     return;
   }
 
@@ -10,6 +25,7 @@ const get = (req, res) => {
     if (error) {
       throw error;
     }
+
     res.status(200).json(results.rows);
   });
 };

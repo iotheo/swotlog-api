@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/users(/:id?[0-9])', Users.get);
+app.post('/users/:id?', Users.get);
 // app.post('/users', db.createUser);
 // app.get('/users/:id', db.getUserById);
 // app.put('/users/:id', db.updateUser);
