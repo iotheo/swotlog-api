@@ -27,6 +27,13 @@ module.exports = {
     'spaced-comment': 1,
     'newline-before-return': 1,
     'no-trailing-spaces': 1,
+    'indent': 1,
+    "padding-line-between-statements": [
+      1,
+      {
+        blankLine: "always", prev: "if", next: "*",
+      }
+    ],
     'import/no-extraneous-dependencies': [
       "error",
       {
