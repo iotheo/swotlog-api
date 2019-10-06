@@ -1,19 +1,23 @@
 const path = require('path');
-const NodemonPlugin = require('nodemon-webpack-plugin')
+const NodemonPlugin = require('nodemon-webpack-plugin');
 
 module.exports = {
   mode: 'development',
   target: 'node',
-  entry: './src/index.js',
+  entry: [
+    './src/index.js',
+    './src/api/Users.js',
+    './src/db.js',
+  ],
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
   },
   plugins: [
-    new NodemonPlugin(), 
+    new NodemonPlugin(),
   ],
   module: {
     rules: [
@@ -23,10 +27,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      }
-    ]
-  }
-}
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
+};
