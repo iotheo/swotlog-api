@@ -9,7 +9,7 @@ const get = (req, res) => {
         throw error;
       }
 
-      if (userId && !results.rows.length) {
+      if (!results.rows.length) {
         res.status(404).send('Not found. Bruh');
 
         return;
