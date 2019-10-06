@@ -23,6 +23,9 @@ module.exports = {
     'import/no-dynamic-require': 0,
     'global-require': 0,
     'import/prefer-default-export': 1,
+    'newline-after-var': 1,
+    'spaced-comment': 1,
+    'newline-before-return': 1,
     'import/no-extraneous-dependencies': [
       "error",
       {
