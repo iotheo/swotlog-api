@@ -31,7 +31,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      db: path.resolve(__dirname, './src/db.js'),
+      db: path.resolve(__dirname, './src/db'),
       api: path.resolve(__dirname, './src/api'),
     },
   },

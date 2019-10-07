@@ -1,9 +1,3 @@
-/*
-  Resolve aliases
-  https://github.com/Microsoft/vscode-eslint/issues/464
-*/
-require('babel-register')
-
 module.exports = {
   env: {
     es6: true,
@@ -19,13 +13,13 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
   },
-  settings: {
+  'settings': {
     'import/resolver': {
-      alias: {
+      'alias': {
         map: [
-          ['db', './src/db']
-        ],
-        extensions: ['.js', '.jsx', '.json'],
+          [ 'api', './src/api'],
+          [ 'db', './src/db' ],
+        ]
       }
     }
   },
@@ -47,25 +41,25 @@ module.exports = {
     'max-len': [
       1,
       {
-        "code": 100,
+        'code': 100,
       },
     ],
-    "padding-line-between-statements": [
+    'padding-line-between-statements': [
       1,
       {
-        blankLine: "always", prev: "if", next: "*",
+        blankLine: 'always', prev: 'if', next: '*',
       }
     ],
     'import/no-extraneous-dependencies': [
-      "error",
+      'error',
       {
-        "devDependencies": true,
+        'devDependencies': true,
       },
     ],
     'max-lines': [
 			2,
 			{
-				"max": 200,
+				'max': 200,
 			},
 		],
 		'quotes': [
