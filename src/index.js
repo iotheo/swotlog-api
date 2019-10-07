@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
   CommonJS syntax is one-way here. We cannot use ES6 syntax for such cases.
   https://stackoverflow.com/questions/31354559/using-node-js-require-vs-es6-import-export
 */
-const Users = require('./api/Users');
+const Users = require('api/Users');
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
