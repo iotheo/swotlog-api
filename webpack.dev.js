@@ -29,4 +29,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    alias: {
+      db: path.resolve(__dirname, './src/db.js'),
+    },
+  },
 };

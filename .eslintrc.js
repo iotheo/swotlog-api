@@ -1,3 +1,9 @@
+/*
+  Resolve aliases
+  https://github.com/Microsoft/vscode-eslint/issues/464
+*/
+require('babel-register')
+
 module.exports = {
   env: {
     es6: true,
@@ -12,6 +18,16 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 2018,
+  },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [
+          ['db', './src/db']
+        ],
+        extensions: ['.js', '.jsx', '.json'],
+      }
+    }
   },
   rules: {
     'no-unused-vars': 1,
@@ -45,6 +61,20 @@ module.exports = {
       {
         "devDependencies": true,
       },
-    ]
+    ],
+    'max-lines': [
+			2,
+			{
+				"max": 200,
+			},
+		],
+		'quotes': [
+			1,
+			'single',
+		],
+    'quote-props': 1,
+    'no-multiple-empty-lines': 1,
+    'no-multi-str': 0,
+    'space-infix-ops': 1,
   },
 };
