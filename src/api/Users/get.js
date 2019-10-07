@@ -1,4 +1,4 @@
-import { pool } from '../db';
+import { pool } from 'db';
 
 const get = (req, res) => {
   const userId = req.params.id;
@@ -30,6 +30,4 @@ const get = (req, res) => {
   });
 };
 
-export {
-  get,
-};
+export default get;

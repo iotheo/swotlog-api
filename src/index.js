@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-// +++ MIDDLEWARE +++
+// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/users/:id?', Users.get);
-// app.post('/users', db.createUser);
+// app.post('/users', Users.create);
 // app.get('/users/:id', db.getUserById);
 // app.put('/users/:id', db.updateUser);
 // app.delete('/users/:id', db.deleteUser);
