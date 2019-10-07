@@ -28,6 +28,12 @@ module.exports = {
     'newline-before-return': 1,
     'no-trailing-spaces': 1,
     'indent': 1,
+    'max-len': [
+      1,
+      {
+        "code": 100,
+      },
+    ],
     "padding-line-between-statements": [
       1,
       {
