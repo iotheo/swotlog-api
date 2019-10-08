@@ -14,6 +14,11 @@ pool.on('connect', () => {
   console.log('Connected to Database!');
 });
 
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
 // const createUser = (req, res) => {
 //     const { username, email, password } = req.body;
 
