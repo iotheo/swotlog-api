@@ -4,7 +4,7 @@ const get = (req, res) => {
   const userId = req.params.id;
 
   if (parseInt(userId, 10)) {
-    pool.query('SELECT * FROM person where id = $1', [userId], (error, results) => {
+    pool.query('SELECT * FROM person where id = $1 LIMIT 1', [userId], (error, results) => {
       if (error) {
         throw error;
       }
