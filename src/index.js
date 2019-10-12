@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({
   https://stackoverflow.com/questions/31354559/using-node-js-require-vs-es6-import-export
 */
 const Users = require('api/Users');
+const Students = require('api/Students');
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -26,7 +27,9 @@ app.get('/', (req, res) => {
 app.post('/users(/:id([0-9]+))?', Users.get);
 app.post('/users/create', Users.create);
 app.delete('/users/:id([0-9]+)', Users.del);
+app.post('/students(/:id([0-9]+))?', Students.get);
 // app.put('/users/:id', db.updateUser);
+
 
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (req, res) => {
