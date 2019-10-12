@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({
 */
 const Users = require('api/Users');
 const Students = require('api/Students');
+const Tutors = require('api/Tutors');
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -28,8 +29,7 @@ app.post('/users(/:id([0-9]+))?', Users.get);
 app.post('/users/create', Users.create);
 app.delete('/users/:id([0-9]+)', Users.del);
 app.post('/students(/:id([0-9]+))?', Students.get);
-// app.put('/users/:id', db.updateUser);
-
+app.post('/tutors(/:id([0-9]+))?', Tutors.get);
 
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (req, res) => {

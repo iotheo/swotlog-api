@@ -7,7 +7,7 @@ const del = (req, res) => {
   } = req.params;
 
   pool.query(
-    'DELETE from person where id = $1',
+    'DELETE from person where id = $1 LIMIT 1',
     [userId],
     (error, results) => {
       if (error) {

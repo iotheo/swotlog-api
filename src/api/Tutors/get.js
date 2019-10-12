@@ -2,24 +2,24 @@ import { pool } from 'db';
 
 const get = (req, res) => {
   const {
-    id: studentId,
+    id: tutorId,
   } = req.params;
 
-  if (parseInt(studentId, 10)) {
+  if (parseInt(tutorId, 10)) {
     pool.query(
-      'SELECT *, student.admission from person\
-      INNER JOIN student ON\
-      person.id = student.person_id\
+      'SELECT *, tutor.specialty from person\
+      INNER JOIN tutor ON\
+      person.id = tutor.person_id\
       AND person.id = $1\
       LIMIT 1',
-      [studentId],
+      [tutorId],
       (error, results) => {
         if (error) {
           throw error;
         }
 
         if (!results.rows.length) {
-          res.status(404).send('Student not found :(');
+          res.status(404).send('tutor not found :(');
 
           return;
         }
@@ -32,16 +32,16 @@ const get = (req, res) => {
   }
 
   pool.query(
-    'SELECT *, student.admision from person\
-    INNER JOIN student ON\
-    person.id = student.person_id',
+    'SELECT *, tutor.specialty from person\
+    INNER JOIN tutor ON\
+    person.id = tutor.person_id',
     (error, results) => {
       if (error) {
         throw error;
       }
 
       if (!results.rows.length) {
-        res.status(404).send('Student not found :(');
+        res.status(404).send('Tutor not found :(');
       }
 
       res.status(200).send(results.rows);
