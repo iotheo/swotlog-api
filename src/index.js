@@ -25,8 +25,9 @@ app.get('/', (req, res) => {
 
 app.post('/users(/:id([0-9]+))?', Users.get);
 app.post('/users/create', Users.create);
-// app.get('/users/:id', db.getUserById);
+app.delete('/users/:id([0-9]+)', Users.del);
 // app.put('/users/:id', db.updateUser);
+
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (req, res) => {
   res.status(404).send('Endpoint reached no man\'s land');

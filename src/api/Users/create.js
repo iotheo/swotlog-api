@@ -1,5 +1,4 @@
 import { pool } from 'db';
-import { doesNotReject } from 'assert';
 
 const create = (req, res) => {
   const {
