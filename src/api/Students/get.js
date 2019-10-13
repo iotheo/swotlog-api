@@ -32,7 +32,7 @@ const get = (req, res) => {
   }
 
   pool.query(
-    'SELECT *, student.admision from person\
+    'SELECT *, student.admission from person\
     INNER JOIN student ON\
     person.id = student.person_id',
     (error, results) => {
