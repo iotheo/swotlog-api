@@ -26,7 +26,14 @@ module.exports = {
   rules: {
     'no-unused-vars': 1,
     'prefer-destructuring': 1,
-    'comma-dangle': 1,
+    'comma-dangle': [
+      1,
+      {
+        "functions": "never",
+        "objects": "always-multiline",
+        "exports": "always-multiline",
+      },
+    ],
     'space-before-blocks': 1,
     'eol-last': 1,
     'arrow-parens': 0,
@@ -70,5 +77,7 @@ module.exports = {
     'no-multiple-empty-lines': 1,
     'no-multi-str': 0,
     'space-infix-ops': 1,
+    'function-paren-newline': [1, 'multiline'],
+    'arrow-parens': [1, 'as-needed']
   },
 };
