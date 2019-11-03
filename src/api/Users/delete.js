@@ -23,7 +23,7 @@ const del = (req, res) => {
       }
 
       res.status(200).send(`User with ID:${userId} deleted successfully`);
-    },
+    }
   );
 };
 

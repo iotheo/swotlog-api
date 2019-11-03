@@ -25,7 +25,7 @@ const create = (req, res) => {
     posts,
     comments,
     likes,
-    dateOfBirth,
+    dateOfBirth
   ],
   (error, results) => {
     if (error) {

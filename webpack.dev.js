@@ -1,5 +1,6 @@
 const path = require('path');
 const NodemonPlugin = require('nodemon-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   mode: 'development',
@@ -13,8 +14,9 @@ module.exports = {
     contentBase: './dist',
   },
   plugins: [
-    new NodemonPlugin(),
+    new NodemonPlugin()
   ],
+  externals: [nodeExternals()], // ignore all node modules
   module: {
     rules: [
       {
@@ -26,13 +28,14 @@ module.exports = {
             presets: ['@babel/preset-env'],
           },
         },
-      },
+      }
     ],
   },
   resolve: {
     alias: {
       db: path.resolve(__dirname, './src/db'),
       api: path.resolve(__dirname, './src/api'),
+      auth: path.resolve(__dirname, './src/auth'),
     },
   },
 };
