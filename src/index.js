@@ -3,6 +3,7 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import passport from 'passport';
 
 dotenv.config();
 
@@ -18,6 +19,13 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 app.use(session({ secret: 'cat' }));
+// Make sure this comes after the express session
+app.use(passport.initialize());
+app.use(passport.session());
+
+const { initializeAuth } = require('./auth/index');
+
+initializeAuth(passport);
 
 /*
   CommonJS syntax is one-way here. We cannot use ES6 syntax for such cases.
@@ -37,7 +45,7 @@ app.post('/users/create', Users.create);
 app.delete('/users/:id([0-9]+)', Users.del);
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
-app.post('/login', Users.login);
+app.post('/login', passport.authenticate('local')/*, Users.login */);
 app.post('/signup', Users.signup);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 

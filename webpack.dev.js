@@ -35,7 +35,6 @@ module.exports = {
     alias: {
       db: path.resolve(__dirname, './src/db'),
       api: path.resolve(__dirname, './src/api'),
-      auth: path.resolve(__dirname, './src/auth'),
     },
   },
 };

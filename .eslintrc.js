@@ -78,6 +78,8 @@ module.exports = {
     'no-multi-str': 0,
     'space-infix-ops': 1,
     'function-paren-newline': [1, 'multiline'],
-    'arrow-parens': [1, 'as-needed']
+    'arrow-parens': [1, 'as-needed'],
+    'prefer-arrow-callback': 0,
+    'space-before-function-paren': [0, 'always'],
   },
 };
