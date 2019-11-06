@@ -9,7 +9,7 @@ const get = (req, res) => {
         (\
           SELECT json_agg(to_json(fields)) AS posts\
           from (\
-          select * FROM post WHERE person_id = $1\
+          select id, content, timestamp FROM post WHERE person_id = $1\
           ) fields\
         ) AS posts\
       WHERE person.id = $1 LIMIT 1',
