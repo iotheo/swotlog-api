@@ -6,25 +6,17 @@ const create = (req, res) => {
     last_name: lastName,
     email,
     registration,
-    classes,
-    posts,
-    comments,
-    likes,
     date_of_birth: dateOfBirth,
   } = req.body;
 
   pool.query('INSERT INTO person (first_name, last_name, email, registration,\
    classes, posts, comments, likes, date_of_birth) VALUES\
-   ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+   ($1, $2, $3, $4, $5)',
   [
     firstName,
     lastName,
     email,
     registration,
-    classes,
-    posts,
-    comments,
-    likes,
     dateOfBirth
   ],
   (error, results) => {

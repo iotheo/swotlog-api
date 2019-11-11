@@ -25,7 +25,7 @@ const get = (req, res) => {
         }
 
         res.status(200).send(results.rows);
-      },
+      }
     );
 
     return;
@@ -44,8 +44,8 @@ const get = (req, res) => {
         res.status(404).send('Student not found :(');
       }
 
-      res.status(200).send(results.rows);
-    },
+      res.status(200).send(results.rows[0]);
+    }
   );
 };
 
