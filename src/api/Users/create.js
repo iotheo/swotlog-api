@@ -1,32 +1,66 @@
 import { pool } from 'db';
+import bcrypt from 'bcrypt';
 
 const create = (req, res) => {
   const {
     first_name: firstName,
     last_name: lastName,
     email,
+    password,
     registration,
     date_of_birth: dateOfBirth,
   } = req.body;
 
-  pool.query('INSERT INTO person (first_name, last_name, email, registration,\
-   classes, posts, comments, likes, date_of_birth) VALUES\
-   ($1, $2, $3, $4, $5)',
-  [
-    firstName,
-    lastName,
-    email,
-    registration,
-    dateOfBirth
-  ],
-  (error, results) => {
-    if (error) {
-      res.status(400).send(error);
+  pool.connect((err, client, done) => {
+    if (err) throw err;
 
-      return;
-    }
+    client.query(
+      'SELECT * from person\
+      WHERE email = $1',
+      [email],
+      (error, results) => {
+        if (error) throw error;
 
-    res.status(201).send(`User added with ID: ${JSON.stringify(results)}`);
+        // Validation check for user
+        if (results.rowCount) {
+          res.status(409).send('User already exists');
+          done();
+
+          return;
+        }
+
+        bcrypt.hash(password, 10, (_err, hashedPassword) => {
+          if (_err) {
+            res.status(500).send('Something happened');
+            done();
+
+            return;
+          }
+
+          client.query(
+            'INSERT INTO person\
+            (first_name, last_name, email, password, registration, date_of_birth)\
+             VALUES\
+             ($1, $2, $3, $4, $5, $6)',
+            [
+              firstName,
+              lastName,
+              email,
+              hashedPassword,
+              registration,
+              dateOfBirth
+            ], (_error, result) => {
+              if (_error) {
+                res.status(500).send(error);
+              }
+            }
+          );
+        });
+
+        done();
+        res.status(201).send('User signed up');
+      }
+    );
   });
 };
 
