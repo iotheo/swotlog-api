@@ -51,7 +51,7 @@ app.post('/users/create', Users.create);
 app.delete('/users/:id([0-9]+)', Users.del);
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
-app.post('/login', passport.authenticate('local')/*, Users.login */);
+app.post('/login', passport.authenticate('local'), Users.login);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 
 // app.delete('/users/:id', db.deleteUser);
