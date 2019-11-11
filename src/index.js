@@ -18,7 +18,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-app.use(session({ secret: 'cat' }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  maxAge: 31536000, // 1 year
+}));
+
 // Make sure this comes after the express session
 app.use(passport.initialize());
 app.use(passport.session());
