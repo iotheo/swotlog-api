@@ -54,7 +54,7 @@ app.post('/tutors(/:id([0-9]+))?', Tutors.get);
 app.post('/login', passport.authenticate('local'), Users.login);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 app.post('/classes/create', Classes.create);
-app.delete('/classes/delete', Classes.del);
+app.delete('/classes/:id([0-9]+)', Classes.del);
 
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (req, res) => {
