@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import passport from 'passport';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(session({
   saveUninitialized: false,
   maxAge: 31536000, // 1 year
 }));
+app.use(cors());
 
 // Make sure this comes after the express session
 app.use(passport.initialize());
