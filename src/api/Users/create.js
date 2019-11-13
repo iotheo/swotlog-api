@@ -14,6 +14,10 @@ const create = (req, res) => {
   pool.connect((err, client, done) => {
     if (err) throw err;
 
+    if (!email || !password) {
+      return res.status(400).send('Required field is missing.');
+    }
+
     client.query(
       'SELECT * from person\
       WHERE email = $1',
