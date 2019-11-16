@@ -15,6 +15,8 @@ const create = (req, res) => {
     if (err) throw err;
 
     if (!email || !password) {
+      done();
+
       return res.status(400).send('Required field is missing.');
     }
 
@@ -35,10 +37,9 @@ const create = (req, res) => {
 
         bcrypt.hash(password, 10, (_err, hashedPassword) => {
           if (_err) {
-            res.status(500).send('Something happened');
             done();
 
-            return;
+            return res.status(500).send('Something happened');
           }
 
           client.query(
@@ -55,7 +56,7 @@ const create = (req, res) => {
               dateOfBirth
             ], (_error, result) => {
               if (_error) {
-                res.status(500).send(error);
+                throw _error;
               }
             }
           );
