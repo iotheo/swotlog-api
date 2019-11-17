@@ -20,6 +20,14 @@ const create = (req, res) => {
       return res.status(400).send('Required field is missing.');
     }
 
+    if (typeof password !== 'string' || password.length <= 4) {
+      done();
+
+      return res.status(400).json({
+        error: 'Password length should be at least 4 characters',
+      });
+    }
+
     client.query(
       'SELECT * from person\
       WHERE email = $1',
@@ -39,7 +47,9 @@ const create = (req, res) => {
           if (_err) {
             done();
 
-            return res.status(500).send('Something happened');
+            return res.status(500).json({
+              error: 'Something went wrong',
+            });
           }
 
           client.query(
