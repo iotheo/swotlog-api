@@ -14,7 +14,7 @@ function initializeAuth(passport) {
 
         client.query(
           'SELECT * from person\
-          WHERE email = $1',
+          WHERE email = $1 LIMIT 1',
           [email],
           /*
             Returning done(null, false) for the case passwords didn't match
@@ -24,10 +24,11 @@ function initializeAuth(passport) {
           (error, results) => {
             if (error) throw error;
 
+
             if (!results.rowCount) {
               _done();
 
-              return done(null, false, { message: 'Incorrect username.' });
+              return done(null, false);
             }
 
             const { password: hashedPassword } = results.rows[0];
@@ -61,4 +62,4 @@ function initializeAuth(passport) {
   });
 }
 
-export { initializeAuth };
+export default initializeAuth;

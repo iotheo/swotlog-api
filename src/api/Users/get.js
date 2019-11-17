@@ -20,7 +20,6 @@ const get = (req, res) => {
           throw error;
         }
 
-
         if (!results.rows.length) {
           res.status(404).send('User not found :((');
 

@@ -31,7 +31,8 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 
-const { initializeAuth } = require('./auth/index');
+/* eslint-disable-next-line */
+const initializeAuth = require('./auth/index').default;
 
 initializeAuth(passport);
 
