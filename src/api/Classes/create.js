@@ -3,6 +3,12 @@ import { pool } from 'db';
 const create = (req, res) => {
   const className = req.body.name;
 
+  if (!className) {
+    return res.status(400).json({
+      error: 'Missing parameter: name',
+    });
+  }
+
   // Early bail-out for existing class names
   pool.connect((err, client, done) => {
     if (err) throw err;
@@ -20,6 +26,7 @@ const create = (req, res) => {
 
           return res.status(409).send(`Class with name ${className} already exists`);
         }
+
 
         client.query(
           'INSERT INTO class (name) VALUES ($1)',
