@@ -12,8 +12,22 @@ const get = (req, res) => {
         (
           SELECT
             json_build_object(
-            'passed', COALESCE(json_agg(passed), '[]'),
-            'subscribed', COALESCE(json_agg(subscribed), '[]')
+            'passed', COALESCE(json_agg(
+              json_build_object(
+                'id', passed.id,
+                'firstName', passed.first_name,
+                'lastName', passed.last_name,
+                'email', passed.email
+              )
+            ), '[]'),
+            'subscribed', COALESCE(json_agg(
+              json_build_object(
+                'id', subscribed.id,
+                'firstName', subscribed.first_name,
+                'lastName', subscribed.last_name,
+                'email', subscribed.email
+              )
+            ), '[]')
           ) AS students
           FROM
             (
