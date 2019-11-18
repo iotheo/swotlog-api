@@ -54,7 +54,13 @@ function initializeAuth(passport) {
   ));
 
   passport.serializeUser((user, done) => {
-    done(null, user.email);
+    done(null, {
+      id: user.id,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      dateOfBirth: user.date_of_birth,
+    });
   });
 
   passport.deserializeUser((user, done) => {
