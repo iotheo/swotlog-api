@@ -54,15 +54,14 @@ const create = (req, res) => {
 
           client.query(
             'INSERT INTO person\
-            (first_name, last_name, email, password, registration, date_of_birth)\
+            (first_name, last_name, email, password, date_of_birth)\
              VALUES\
-             ($1, $2, $3, $4, $5, $6)',
+             ($1, $2, $3, $4, $5)',
             [
               firstName,
               lastName,
               email,
               hashedPassword,
-              registration,
               dateOfBirth
             ], (_error, result) => {
               if (_error) {
