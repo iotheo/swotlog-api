@@ -7,7 +7,30 @@ const get = (req, res) => {
 
   if (parseInt(classId, 10)) {
     pool.query(
-      'SELECT students, class from class where id = $1 LIMIT 1 ',
+      `SELECT
+        class.*,
+        (
+          SELECT
+            json_build_object(
+            'passed', COALESCE(json_agg(passed), '[]'),
+            'subscribed', COALESCE(json_agg(subscribed), '[]')
+          ) AS students
+          FROM
+            (
+              select person.* FROM person, student, class_student
+                WHERE person.id = student.person_id AND student.id = class_student.student_id
+                  AND class_student.class_id = $1 AND class_student.has_passed IS TRUE
+            ) passed
+        )
+      from class,
+      (
+        select person.* FROM person, student, class_student
+          WHERE person.id = student.person_id AND student.id = class_student.student_id
+            AND class_student.class_id = $1 AND class_student.has_subscribed IS TRUE
+      ) subscribed
+      where class.id = $1
+      group by class.id;
+      `,
       [classId],
       (error, results) => {
         if (error) {
@@ -20,7 +43,7 @@ const get = (req, res) => {
           return;
         }
 
-        res.status(200).send(results.rows[0]);
+        res.status(200).send(results.rows);
       }
     );
 
@@ -28,12 +51,7 @@ const get = (req, res) => {
   }
 
   pool.query(
-    'SELECT * from class, (\
-      SELECT array_to_json(array_agg(to_json(fields)))\
-          from (\
-            select * from student\
-          ) fields\
-    ) as data',
+    'SELECT * FROM class',
     (error, results) => {
       if (error) {
         throw error;

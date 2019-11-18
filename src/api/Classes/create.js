@@ -19,8 +19,6 @@ const create = (req, res) => {
       (_err, results) => {
         if (_err) throw _err;
 
-        console.table(results.rowCount);
-
         if (results.rowCount) {
           done();
 
@@ -33,7 +31,8 @@ const create = (req, res) => {
           [className],
           (__err, __results) => {
             if (__err) throw __err;
-          });
+          }
+        );
 
         done();
 
