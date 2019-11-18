@@ -23,9 +23,15 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  maxAge: 31536000, // 1 year
+  cookie: {
+    maxAge: 31536000, // 1 year
+    httpOnly: false,
+  },
 }));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 
 // Make sure this comes after the express session
 app.use(passport.initialize());
@@ -45,7 +51,7 @@ const Students = require('api/Students');
 const Tutors = require('api/Tutors');
 const Classes = require('api/Classes');
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
   res.send('Hello World!');
 });
 
@@ -60,7 +66,7 @@ app.post('/classes/create', Classes.create);
 app.delete('/classes/:id([0-9]+)', Classes.del);
 
 // app.delete('/users/:id', db.deleteUser);
-app.post('*', (req, res) => {
+app.post('*', (_, res) => {
   res.status(404).send('Endpoint reached no man\'s land');
 });
 
