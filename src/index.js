@@ -50,6 +50,7 @@ const Users = require('api/Users');
 const Students = require('api/Students');
 const Tutors = require('api/Tutors');
 const Classes = require('api/Classes');
+const Posts = require('api/Posts');
 
 app.get('/', (_, res) => {
   res.send('Hello World!');
@@ -64,6 +65,8 @@ app.post('/login', passport.authenticate('local'), Users.login);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 app.post('/classes/create', Classes.create);
 app.delete('/classes/:id([0-9]+)', Classes.del);
+app.post('/posts(/:id([0-9]+))?', Posts.get);
+// app.post('/posts/create', Posts.create);
 
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (_, res) => {
