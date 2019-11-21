@@ -9,7 +9,7 @@ const get = (req, res) => {
     pool.query(
       `SELECT
         post.discourse_id AS id,
-        discourse.created_at,
+        discourse.created_at as "createdAt",
         discourse.content,
         json_build_object(
           'id', author.id,
@@ -59,7 +59,29 @@ const get = (req, res) => {
   }
 
   pool.query(
-    `SELECT * FROM post`,
+    `SELECT
+      discourse.id,
+      discourse.content,
+      discourse.created_at as "createdAt",
+      COALESCE(
+        json_build_object(
+        'id', class.id,
+        'content', class.name
+      ), '{}') as class,
+      COALESCE(
+        json_build_object(
+          'id', person.id,
+          'firstName', person.first_name,
+          'lastName', person.last_name,
+          'email', person.email
+        ), '{}') as author
+    FROM class
+    INNER JOIN post ON post.class_id = class.id
+    INNER JOIN discourse ON discourse.id = post.discourse_id
+    INNER JOIN person ON person.id = discourse.author_id
+    GROUP BY discourse.id, class.id, person.id
+    ORDER BY discourse.created_at desc
+    `,
     (err, results) => {
       if (err) throw err;
 
