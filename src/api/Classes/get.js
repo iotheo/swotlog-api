@@ -65,7 +65,26 @@ const get = (req, res) => {
   }
 
   pool.query(
-    'SELECT * FROM class',
+    `SELECT
+      class.*,
+      array_agg(
+        json_build_object(
+          'id', post.discourse_id,
+          'content', discourse.content,
+          'createdAt', discourse.created_at,
+          'author', json_build_object(
+            'id', person.id,
+            'firstName', person.first_name,
+            'lastName', person.last_name,
+            'email', person.email
+        )
+      )
+    ) as posts
+    FROM class
+    INNER JOIN post ON post.class_id = class.id
+    INNER JOIN discourse ON discourse.id = post.discourse_id
+    INNER JOIN person ON person.id = discourse.author_id
+    group by class.id`,
     (error, results) => {
       if (error) {
         throw error;
