@@ -3,12 +3,10 @@ import bcrypt from 'bcrypt';
 
 const create = (req, res) => {
   const {
-    first_name: firstName,
-    last_name: lastName,
+    firstName,
+    lastName,
     email,
     password,
-    registration,
-    date_of_birth: dateOfBirth,
   } = req.body;
 
   pool.connect((err, client, done) => {
@@ -54,15 +52,14 @@ const create = (req, res) => {
 
           client.query(
             'INSERT INTO person\
-            (first_name, last_name, email, password, date_of_birth)\
+            (first_name, last_name, email, password)\
              VALUES\
-             ($1, $2, $3, $4, $5)',
+             ($1, $2, $3, $4)',
             [
               firstName,
               lastName,
               email,
-              hashedPassword,
-              dateOfBirth
+              hashedPassword
             ], (_error, result) => {
               if (_error) {
                 throw _error;

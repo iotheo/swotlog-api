@@ -19,15 +19,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 31536000, // 1 year
-    httpOnly: false,
-  },
-}));
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
@@ -35,7 +26,6 @@ app.use(cors({
 
 // Make sure this comes after the express session
 app.use(passport.initialize());
-app.use(passport.session());
 
 /* eslint-disable-next-line */
 const initializeAuth = require('./auth/index').default;
@@ -57,15 +47,16 @@ app.get('/', (_, res) => {
 });
 
 app.post('/users(/:id([0-9]+))?', Users.get);
+// app.put('/users/:id([0-9]+)', Users.update);
 app.post('/users/create', Users.create);
 app.delete('/users/:id([0-9]+)', Users.del);
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
-app.post('/login', passport.authenticate('local'), Users.login);
+app.post('/login', Users.login);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 app.post('/classes/create', Classes.create);
 app.delete('/classes/:id([0-9]+)', Classes.del);
-app.post('/posts(/:id([0-9]+))?', Posts.get);
+app.post('/posts(/:id([0-9]+))?', passport.authenticate('jwt', { session: false }), Posts.get);
 // app.post('/posts/create', Posts.create);
 
 // app.delete('/users/:id', db.deleteUser);

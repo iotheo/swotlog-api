@@ -2,6 +2,10 @@ import { pool } from 'db';
 import bcrypt from 'bcrypt';
 
 const LocalStrategy = require('passport-local').Strategy;
+const passportJWT = require('passport-jwt');
+
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 function initializeAuth(passport) {
   passport.use(new LocalStrategy(
@@ -37,9 +41,18 @@ function initializeAuth(passport) {
               if (_err) throw _err;
 
               if (passwordsMatched) {
+                const user = results.rows[0];
+
                 _done();
 
-                return done(null, results.rows[0]);
+                return done(null, {
+                  id: user.id,
+                  firstName: user.first_name,
+                  lastName: user.last_name,
+                  dateOfBirth: user.date_of_birth,
+                  passed: [], // TODO,
+                  subscribed: [], // TODO
+                });
               }
 
               // if the user is found but wrong credentials are given
@@ -53,19 +66,26 @@ function initializeAuth(passport) {
     }
   ));
 
-  passport.serializeUser((user, done) => {
-    done(null, {
-      id: user.id,
-      email: user.email,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      dateOfBirth: user.date_of_birth,
-    });
-  });
+  passport.use(new JWTStrategy({
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.SECRET_TOKEN,
+  },
+  function authUser(jwtPayload, done) {
+    pool.query(
+      `SELECT * FROM person WHERE id = $1 LIMIT 1`,
+      [jwtPayload.id],
+      (err, results) => {
+        if (err) throw err;
 
-  passport.deserializeUser((user, done) => {
-    done(null, user);
-  });
+        if (!results.rowCount) {
+          return (null, false);
+        }
+
+        done(null, jwtPayload);
+      }
+    );
+  }
+  ));
 }
 
 export default initializeAuth;
