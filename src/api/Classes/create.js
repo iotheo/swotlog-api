@@ -22,7 +22,9 @@ const create = (req, res) => {
         if (results.rowCount) {
           done();
 
-          return res.status(409).send(`Class with name ${className} already exists`);
+          return res.status(409).send({
+            error: `Class with name ${className} already exists`,
+          });
         }
 
 
@@ -36,7 +38,9 @@ const create = (req, res) => {
 
         done();
 
-        return res.status(201).send('Class created successfully');
+        return res.status(201).json({
+          message: 'Class created successfully',
+        });
       }
     );
   });

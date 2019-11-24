@@ -19,6 +19,8 @@ module.exports = {
         map: [
           [ 'api', './src/api'],
           [ 'db', './src/db' ],
+          [ 'utils', './utils' ],
+          [ 'helpers', './helpers' ],
         ]
       }
     }
@@ -81,5 +83,6 @@ module.exports = {
     'arrow-parens': [1, 'as-needed'],
     'prefer-arrow-callback': 0,
     'space-before-function-paren': [0, 'always'],
+    'prefer-rest-params': 1,
   },
 };

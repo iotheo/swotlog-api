@@ -78,7 +78,7 @@ function initializeAuth(passport) {
         if (err) throw err;
 
         if (!results.rowCount) {
-          return (null, false);
+          return done(null, false);
         }
 
         done(null, jwtPayload);

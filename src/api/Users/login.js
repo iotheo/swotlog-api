@@ -5,13 +5,13 @@ const login = (req, res, next) => {
   return passport.authenticate('local', { session: false }, (err, user) => {
     if (err) {
       res.status(400).json({
-        message: 'Something went wrong',
+        error: 'Something went wrong',
       });
     }
 
     if (!user) {
       return res.status(401).json({
-        message: 'Credentials do not match',
+        error: 'Credentials do not match',
       });
     }
 

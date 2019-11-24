@@ -64,6 +64,7 @@ const get = (req, res) => {
     return;
   }
 
+  // TODO fix classes with no posts
   pool.query(
     `SELECT
       class.*,
@@ -81,9 +82,9 @@ const get = (req, res) => {
       )
     ) as posts
     FROM class
-    INNER JOIN post ON post.class_id = class.id
-    INNER JOIN discourse ON discourse.id = post.discourse_id
-    INNER JOIN person ON person.id = discourse.author_id
+    LEFT JOIN post ON post.class_id = class.id
+    LEFT JOIN discourse ON discourse.id = post.discourse_id
+    LEFT JOIN person ON person.id = discourse.author_id
     group by class.id`,
     (error, results) => {
       if (error) {

@@ -51,25 +51,38 @@ const create = (req, res) => {
           }
 
           client.query(
-            'INSERT INTO person\
-            (first_name, last_name, email, password)\
-             VALUES\
-             ($1, $2, $3, $4)',
+            `INSERT INTO person
+            (first_name, last_name, email, password)
+             VALUES
+             ($1, $2, $3, $4) RETURNING id`,
             [
               firstName,
               lastName,
               email,
               hashedPassword
-            ], (_error, result) => {
+            ], (_error, _results) => {
               if (_error) {
                 throw _error;
               }
+              const id = _results.rows[0].id;
+
+              client.query(
+                `INSERT INTO student (person_id) values ($1)`,
+                [id],
+                (__err, _) => {
+                  if (__err) {
+                    throw __err;
+                  }
+                }
+              );
             }
           );
         });
 
         done();
-        res.status(201).send('User signed up');
+        res.status(201).json({
+          message: 'User signed up',
+        });
       }
     );
   });
