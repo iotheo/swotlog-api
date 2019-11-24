@@ -68,7 +68,7 @@ const get = (req, res) => {
   pool.query(
     `SELECT
       class.*,
-      array_agg(
+      COALESCE(json_agg(
         json_build_object(
           'id', post.discourse_id,
           'content', discourse.content,
@@ -78,9 +78,9 @@ const get = (req, res) => {
             'firstName', person.first_name,
             'lastName', person.last_name,
             'email', person.email
+          )
         )
-      )
-    ) as posts
+      ) FILTER (WHERE post.discourse_id IS NOT NULL), '[]') AS posts
     FROM class
     LEFT JOIN post ON post.class_id = class.id
     LEFT JOIN discourse ON discourse.id = post.discourse_id
