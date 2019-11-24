@@ -1,5 +1,5 @@
 import express from 'express';
-import session from 'express-session';
+// import session from 'express-session';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
@@ -52,7 +52,7 @@ app.post('/users/create', Users.create);
 app.delete('/users/:id([0-9]+)', Users.del);
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
-app.post('/login', Users.login);
+app.post('/login', Users.login, Users.get);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 app.post('/classes/create', Classes.create);
 app.delete('/classes/:id([0-9]+)', Classes.del);

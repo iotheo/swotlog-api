@@ -1,7 +1,12 @@
 import { pool } from 'db';
 
 const get = (req, res) => {
-  const userId = req.params.id;
+  const {
+    token,
+    id,
+  } = res.locals;
+
+  const userId = req.params.id || id;
 
   if (parseInt(userId, 10)) {
     pool.query(
@@ -45,7 +50,10 @@ const get = (req, res) => {
           return;
         }
 
-        res.status(200).json(results.rows[0]);
+        res.status(200).json({
+          ...results.rows[0],
+          token,
+        });
       }
     );
 

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   return passport.authenticate('local', { session: false }, (err, user) => {
     if (err) {
       res.status(400).json({
@@ -38,10 +38,13 @@ const login = (req, res) => {
         }
       );
 
-      return res.status(200).json({
+      res.locals = {
+        id: req.user.id, // Used by the next() function as a param to get logged in user
         user: req.user,
         token,
-      });
+      };
+
+      return next();
     });
   })(req, res);
 };
