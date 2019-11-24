@@ -5,15 +5,34 @@ const get = (req, res) => {
 
   if (parseInt(userId, 10)) {
     pool.query(
-      'SELECT * FROM person,\
-      (SELECT COALESCE(array_agg(to_json(fields)), \'{}\') AS posts FROM\
-        (SELECT id, content, timestamp FROM post WHERE person_id = $1) fields\
-      ) AS posts,\
-      (SELECT COALESCE(array_agg(to_json(fields)), \'{}\') AS classes FROM\
-        (SELECT * FROM class_student) AS fields\
-          WHERE class_id = $1\
-      ) AS classes\
-      WHERE person.id = $1 LIMIT 1',
+      `SELECT
+        person.id,
+        person.email,
+        person.first_name as "firstName",
+        person.last_name as "lastName",
+        (
+          SELECT
+          json_build_object(
+            'passed', COALESCE(json_agg(passed), '{}'),
+            'subscribed', COALESCE(json_agg(subscribed), '{}')
+          ) AS classes
+          FROM (
+            SELECT class.id, class.name FROM class
+              INNER JOIN student ON person.id = student.person_id
+              INNER JOIN class_student ON class_student.student_id = student.id AND class.id = class_student.class_id
+                WHERE class_student.has_passed IS true AND person.id = $1
+          ) as passed
+        )
+        from person,
+        (
+          SELECT class.id, class.name FROM class
+          INNER JOIN class_student ON class_student.class_id = class.id
+          INNER JOIN student ON class_student.student_id = student.id
+          INNER JOIN person ON person.id = class_student.student_id
+          WHERE class_student.has_subscribed IS true AND person.id = $1
+        ) as subscribed
+        where person.id = $1
+        group by person.id`,
       [userId],
       (error, results) => {
         if (error) {
