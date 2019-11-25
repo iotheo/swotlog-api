@@ -8,41 +8,41 @@ const get = (req, res) => {
   if (parseInt(id, 10)) {
     pool.query(
       `SELECT
-        post.discourse_id AS id,
-        discourse.created_at as "createdAt",
+        discourse.id,
         discourse.content,
-        json_build_object(
-          'id', author.id,
-          'firstName', author.firstName,
-          'lastName', author.lastName
-        ) AS author,
-        json_build_object(
+        discourse.created_at as "createdAt",
+        COALESCE(
+          json_build_object(
           'id', class.id,
-          'name', class.name
-        ) AS class
-        FROM
-        (
-          SELECT
-            person.id,
-            person.first_name AS firstName,
-            person.last_name AS lastName,
-            person.email AS email
-            FROM person
-          INNER JOIN discourse ON person.id = discourse.author_id
-          INNER JOIN post ON post.discourse_id = discourse.id
-          WHERE discourse.id = $1 LIMIT 1
-        ) author,
-        (
-          SELECT class.* FROM class
-            INNER JOIN post
-            ON class.id = post.class_id AND post.discourse_id = $1
-        ) class,
-          post
-          INNER JOIN discourse ON
-          discourse.id = post.discourse_id
-          WHERE discourse.id = $1 LIMIT 1
-          `,
-
+          'content', class.name
+        ), '{}') as class,
+        COALESCE(
+          json_build_object(
+            'id', person.id,
+            'firstName', person.first_name,
+            'lastName', person.last_name,
+            'email', person.email
+          ), '{}') as author,
+          json_agg(
+            json_build_object(
+              'id', comment.id,
+              'content', comment.content,
+              'author', json_build_object(
+                'id', person.id,
+                'firstName', author.first_name,
+                'lastName', author.last_name
+              )
+            )
+          ) FILTER (WHERE comment.id IS NOT NULL) as comments
+          FROM class
+          INNER JOIN post ON post.class_id = class.id
+          INNER JOIN discourse ON discourse.id = post.discourse_id
+          INNER JOIN person ON person.id = discourse.author_id
+          LEFT JOIN comment on comment.discourse_id = discourse.id
+          LEFT JOIN person as author on comment.author_id = author.id
+          WHERE discourse.id = $1
+          GROUP BY discourse.id, class.id, person.id
+          LIMIT 1`,
       [id],
       (err, results) => {
         if (err) throw err;
@@ -74,11 +74,24 @@ const get = (req, res) => {
           'firstName', person.first_name,
           'lastName', person.last_name,
           'email', person.email
-        ), '{}') as author
+        ), '{}') as author,
+        json_agg(
+          json_build_object(
+            'id', comment.id,
+            'content', comment.content,
+            'author', json_build_object(
+              'id', person.id,
+              'firstName', author.first_name,
+              'lastName', author.last_name
+            )
+          )
+        ) FILTER (WHERE comment.id IS NOT NULL) as comments
     FROM class
     INNER JOIN post ON post.class_id = class.id
     INNER JOIN discourse ON discourse.id = post.discourse_id
     INNER JOIN person ON person.id = discourse.author_id
+    LEFT JOIN comment on comment.discourse_id = discourse.id
+    LEFT JOIN person as author on comment.author_id = author.id
     GROUP BY discourse.id, class.id, person.id
     ORDER BY discourse.created_at desc
     `,
