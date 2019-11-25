@@ -42,23 +42,24 @@ const Tutors = require('api/Tutors');
 const Classes = require('api/Classes');
 const Posts = require('api/Posts');
 
-app.get('/', (_, res) => {
-  res.send('Hello World!');
-});
 
-app.post('/users(/:id([0-9]+))?', Users.get);
-// app.put('/users/:id([0-9]+)', Users.update);
+app.post('/login', Users.login, Users.get);
+app.all('*', passport.authenticate('jwt', { session: false }));
 app.post('/users/create', Users.create);
+app.post('/users(/:id([0-9]+))?', Users.get);
+app.post('/users/passed', Users.getPassed);
+app.post('users/subscribed', Users.getSubscribed);
+
+
+// app.put('/users/update', Users.update);
 app.delete('/users/:id([0-9]+)', Users.del);
+app.post('/posts(/:id([0-9]+))?', Posts.get);
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
-app.post('/login', Users.login, Users.get);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 app.post('/classes/create', Classes.create);
 app.delete('/classes/:id([0-9]+)', Classes.del);
-app.post('/posts(/:id([0-9]+))?', passport.authenticate('jwt', { session: false }), Posts.get);
 // app.post('/posts/create', Posts.create);
-
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (_, res) => {
   res.status(404).send('Endpoint reached no man\'s land');
