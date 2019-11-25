@@ -98,7 +98,7 @@ const get = (req, res) => {
     (err, results) => {
       if (err) throw err;
 
-      res.status(200).send(results.rows);
+      return res.status(200).send(results.rows);
     }
   );
 };
