@@ -48,7 +48,7 @@ app.all('*', passport.authenticate('jwt', { session: false }));
 app.post('/users/create', Users.create);
 app.post('/users(/:id([0-9]+))?', Users.get);
 app.post('/users/passed', Users.getPassed);
-app.post('users/subscribed', Users.getSubscribed);
+app.post('/users/subscribed', Users.getSubscribed);
 
 
 // app.put('/users/update', Users.update);
