@@ -51,8 +51,8 @@ app.post('/users/passed', Users.getPassed);
 app.post('/users/subscribed', Users.getSubscribed);
 
 
-app.post('/users/update', Users.update);
-app.delete('/users/:id([0-9]+)', Users.del);
+// app.post('/users/update', Users.update);
+// app.delete('/users/:id([0-9]+)', Users.del);
 
 app.post('/posts(/:id([0-9]+))?', Posts.get);
 app.post('/posts/create', Posts.create);
