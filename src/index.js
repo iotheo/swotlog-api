@@ -62,7 +62,6 @@ app.post('/tutors(/:id([0-9]+))?', Tutors.get);
 app.post('/classes(/:id([0-9]+))?', Classes.get);
 app.post('/classes/create', Classes.create);
 app.delete('/classes/:id([0-9]+)', Classes.del);
-// app.post('/posts/create', Posts.create);
 // app.delete('/users/:id', db.deleteUser);
 app.post('*', (_, res) => {
   res.status(404).send('Endpoint reached no man\'s land');
