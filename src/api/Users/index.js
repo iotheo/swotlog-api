@@ -4,6 +4,7 @@ import getSubscribed from './getSubscribed';
 import create from './create';
 import del from './delete';
 import login from './login';
+import update from './update';
 
 export {
   get,
@@ -12,4 +13,5 @@ export {
   del,
   getPassed,
   getSubscribed,
+  update,
 };

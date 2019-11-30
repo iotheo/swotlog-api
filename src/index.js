@@ -44,18 +44,18 @@ const Posts = require('api/Posts');
 
 
 app.post('/login', Users.login, Users.get);
-app.all('*', passport.authenticate('jwt', { session: false }));
 app.post('/users/create', Users.create);
-app.post('/users(/:id([0-9]+))?', Users.get);
+
+app.all('*', passport.authenticate('jwt', { session: false }));
+
+app.post('/users/update', Users.update);
 app.post('/users/passed', Users.getPassed);
 app.post('/users/subscribed', Users.getSubscribed);
+app.post('/users(/:id([0-9]+))?', Users.get);
+app.delete('/users/:id([0-9]+)', Users.del);
 
-
-// app.post('/users/update', Users.update);
-// app.delete('/users/:id([0-9]+)', Users.del);
-
-app.post('/posts(/:id([0-9]+))?', Posts.get);
 app.post('/posts/create', Posts.create);
+app.post('/posts(/:id([0-9]+))?', Posts.get);
 
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);

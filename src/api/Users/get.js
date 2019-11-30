@@ -7,7 +7,6 @@ const get = (req, res) => {
   } = res.locals;
 
   const userId = req.params.id || id;
-  console.log('to id', userId);
 
   if (parseInt(userId, 10)) {
     pool.query(

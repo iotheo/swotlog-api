@@ -15,7 +15,9 @@ const create = (req, res) => {
     if (!email || !password) {
       done();
 
-      return res.status(400).send('Required field is missing.');
+      return res.status(400).json({
+        error: 'No credentials given',
+      });
     }
 
     if (typeof password !== 'string' || password.length <= 4) {
@@ -35,7 +37,9 @@ const create = (req, res) => {
 
         // Validation check for user
         if (results.rowCount) {
-          res.status(409).send('User already exists');
+          res.status(409).json({
+            message: 'User already exists',
+          });
           done();
 
           return;
@@ -69,7 +73,7 @@ const create = (req, res) => {
               client.query(
                 `INSERT INTO student (person_id) values ($1)`,
                 [id],
-                (__err, _) => {
+                __err => {
                   if (__err) {
                     throw __err;
                   }
