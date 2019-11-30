@@ -1,4 +1,5 @@
 import { pool } from 'db';
+import getUpdateClassQuery from 'helpers/getUpdateClassQuery';
 
 const update = async (req, res) => {
   const {
@@ -6,8 +7,8 @@ const update = async (req, res) => {
   } = req.user;
 
   const {
-    firstName,
-    lastName,
+    firstName = req.user.firstName,
+    lastName = req.user.lastName,
     classes = [],
   } = req.body;
 
@@ -26,7 +27,7 @@ const update = async (req, res) => {
   SET first_name = $2, last_name = $3 WHERE id = $1`;
 
   const getStudentId = `
-    SELECT student.id FROM person
+    SELECT student.id as "studentId" FROM person
       INNER JOIN student ON person.id = student.person_id
       AND person.id = $1 LIMIT 1`;
 
@@ -34,18 +35,11 @@ const update = async (req, res) => {
     INSERT INTO class_student (student_id, class_id)
       VALUES ($1, $2) ON CONFLICT DO NOTHING`;
 
-  const updateClass = `
-    INSERT INTO class_student (student_id, class_id, has_passed, has_subscribed)
-      VALUES ($1, $2, $3, $4)
-      ON CONFLICT ON CONSTRAINT class_student_id DO update
-      set has_passed = $3, has_subscribed = $4`;
-
-
   const userInfoValues = [id, firstName, lastName];
 
   try {
     const studentId = await client.query(getStudentId, [id])
-      .then(_res => _res.rows[0].personId);
+      .then(_res => _res.rows[0].studentId);
 
     await client.query(updateUserInfo, userInfoValues);
 
@@ -56,14 +50,21 @@ const update = async (req, res) => {
     }
 
     for (const course of classes) {
+      const {
+        id: classId,
+        ...rest
+      } = course;
+
       await client.query(
         addUserToClassIfNeeded,
         [studentId, course.id]
       );
 
+      console.log('edo', course);
+
       await client.query(
-        updateClass,
-        [studentId, course.id, Boolean(course.hasPassed), Boolean(course.hasSubscribed)]
+        getUpdateClassQuery(course),
+        [studentId, classId, ...Object.values(rest)]
       );
     }
 
