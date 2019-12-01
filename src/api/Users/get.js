@@ -14,8 +14,22 @@ const get = (req, res) => {
         person.id,
         person.email,
         person.first_name as "firstName",
-        person.last_name as "lastName"
-        FROM person WHERE person.id = $1`,
+        person.last_name as "lastName",
+        COALESCE(json_agg(
+          json_build_object(
+            'id', connected.id,
+            'firstName', connected.first_name,
+            'lastName', connected.last_name
+          )
+        ) FILTER (WHERE connected.id IS NOT NULL))
+        AS followers
+            FROM person
+          LEFT JOIN follow ON
+            person.id = follow.follower_id
+            AND following_id != person.id
+          left join person as connected ON following_id = connected.id
+           WHERE person.id = $1
+         GROUP BY person.id`,
       [userId],
       (error, results) => {
         if (error) {
