@@ -2,10 +2,15 @@ import { pool } from 'db';
 
 const get = (req, res) => {
   const {
-    id,
+    niceToHave,
   } = req.params;
 
-  if (parseInt(id, 10)) {
+  const {
+    id,
+  } = req.user;
+
+  // User's posts
+  if (parseInt(niceToHave, 10)) {
     pool.query(
       `SELECT
         discourse.id,
@@ -58,6 +63,7 @@ const get = (req, res) => {
     return;
   }
 
+  // Users' feed
   pool.query(
     `SELECT
       discourse.id,

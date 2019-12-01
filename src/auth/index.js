@@ -47,11 +47,6 @@ function initializeAuth(passport) {
 
                 return done(null, {
                   id: user.id,
-                  firstName: user.first_name,
-                  lastName: user.last_name,
-                  dateOfBirth: user.date_of_birth,
-                  passed: [], // TODO,
-                  subscribed: [], // TODO
                 });
               }
 
