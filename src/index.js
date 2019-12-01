@@ -41,6 +41,8 @@ const Students = require('api/Students');
 const Tutors = require('api/Tutors');
 const Classes = require('api/Classes');
 const Posts = require('api/Posts');
+const Comments = require('api/Comments');
+const Groups = require('api/Groups');
 
 
 app.post('/login', Users.login, Users.get);
@@ -56,6 +58,10 @@ app.delete('/users/:id([0-9]+)', Users.del);
 
 app.post('/posts/create', Posts.create);
 app.post('/posts(/:id([0-9]+))?', Posts.get);
+
+app.post('/comments/create', Comments.create);
+
+app.post('/groups/create', Groups.create);
 
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
