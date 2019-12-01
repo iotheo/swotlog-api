@@ -90,7 +90,7 @@ const get = (req, res) => {
               'firstName', author.first_name,
               'lastName', author.last_name
             )
-          )
+          ) ORDER BY comment.created_at asc
         ) FILTER (WHERE comment.id IS NOT NULL) as comments
     FROM class
     INNER JOIN post ON post.class_id = class.id
