@@ -19,7 +19,7 @@ const get = (req, res) => {
         COALESCE(
           json_build_object(
           'id', class.id,
-          'content', class.name
+          'name', class.name
         ), '{}') as class,
         COALESCE(
           json_build_object(
@@ -72,7 +72,7 @@ const get = (req, res) => {
       COALESCE(
         json_build_object(
         'id', class.id,
-        'content', class.name
+        'name', class.name
       ), '{}') as class,
       COALESCE(
         json_build_object(
