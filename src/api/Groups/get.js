@@ -44,6 +44,8 @@ const get = (req, res) => {
         res.status(200).send(results.rows);
       }
     );
+
+    return;
   }
 
   // All Groups
