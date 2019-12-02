@@ -22,7 +22,7 @@ const get = (req, res) => {
                 'lastName', creator.last_name,
                 'email', creator.email
               )
-            )
+            ) ORDER BY discourse.created_at desc
           ) FILTER (WHERE discourse.id IS NOT NULL), '[]') AS tasks
         FROM groups
         LEFT JOIN task ON groups.id = task.group_id
