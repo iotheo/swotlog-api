@@ -44,6 +44,7 @@ const Posts = require('api/Posts');
 const Comments = require('api/Comments');
 const Groups = require('api/Groups');
 const Tasks = require('api/Tasks');
+const Related = require('api/Related');
 
 
 app.post('/login', Users.login, Users.get);
@@ -66,6 +67,8 @@ app.post('/groups/create', Groups.create);
 app.post('/groups(/:id([0-9]+))?', Groups.get);
 
 app.post('/tasks/create', Tasks.create);
+
+app.post('/related', Related.get);
 
 app.post('/students(/:id([0-9]+))?', Students.get);
 app.post('/tutors(/:id([0-9]+))?', Tutors.get);
