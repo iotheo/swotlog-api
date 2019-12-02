@@ -6,7 +6,12 @@ const get = (req, res) => {
   } = req.user;
 
   pool.query(
-    `SELECT person.* FROM person
+    `SELECT
+      person.id,
+      person.first_name AS "firstName",
+      person.last_name AS "lastName",
+      email AS "email",
+      FROM person
       INNER JOIN student ON student.person_id = person.id
       INNER JOIN class_student ON class_student.student_id = student.id
       INNER JOIN class ON class_student.class_id = class.id
