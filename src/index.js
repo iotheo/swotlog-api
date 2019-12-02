@@ -45,6 +45,7 @@ const Comments = require('api/Comments');
 const Groups = require('api/Groups');
 const Tasks = require('api/Tasks');
 const Related = require('api/Related');
+const Follow = require('api/Follow');
 
 
 app.post('/login', Users.login, Users.get);
@@ -67,6 +68,8 @@ app.post('/groups/create', Groups.create);
 app.post('/groups(/:id([0-9]+))?', Groups.get);
 
 app.post('/tasks/create', Tasks.create);
+
+app.post('/follow/create', Follow.create);
 
 app.post('/related', Related.get);
 
