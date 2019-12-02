@@ -21,7 +21,13 @@ const get = (req, res) => {
                 'firstName', creator.first_name,
                 'lastName', creator.last_name,
                 'email', creator.email
-              )
+              ),
+              'assignee', json_strip_nulls(json_build_object(
+                'id', assignee.id,
+                'firstName', assignee.first_name,
+                'lastName', assignee.last_name,
+                'email', assignee.email
+              ))
             ) ORDER BY discourse.created_at desc
           ) FILTER (WHERE discourse.id IS NOT NULL), '[]') AS tasks
         FROM groups
